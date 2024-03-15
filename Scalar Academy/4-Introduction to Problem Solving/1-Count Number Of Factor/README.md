@@ -1,5 +1,3 @@
-## Q1. Count Factors - 2
-
 ### Problem Description
 
 Given an integer `A`, determine the count of its factors. A factor of a number is a value that perfectly divides it, leaving no remainder. For example, for the number 6, the factors are 1, 2, 3, and 6.
