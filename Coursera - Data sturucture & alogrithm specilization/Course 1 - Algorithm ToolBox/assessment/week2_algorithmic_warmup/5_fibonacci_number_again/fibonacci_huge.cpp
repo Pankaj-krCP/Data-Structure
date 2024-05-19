@@ -1,23 +1,32 @@
 #include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
 
-long long get_fibonacci_huge_naive(long long n, long long m) {
-    if (n <= 1)
-        return n;
+vector<int> pisano(int m)
+{
+    vector<int> v;
+    int current = 0, next = 1;
 
-    long long previous = 0;
-    long long current  = 1;
+    v.push_back(current);
 
-    for (long long i = 0; i < n - 1; ++i) {
-        long long tmp_previous = previous;
-        previous = current;
-        current = tmp_previous + current;
+    if (m < 2)
+        return v;
+    current = (next += current) - current;
+
+    while (current != 0 || next != 1)
+    {
+        v.push_back(current);
+        int tmp=next;
+        next = (current+next)%m;
+        current = tmp;
     }
 
-    return current % m;
+    return v;
 }
 
 int main() {
     long long n, m;
     std::cin >> n >> m;
-    std::cout << get_fibonacci_huge_naive(n, m) << '\n';
+    vector<int> v = pisano(m);
+    std::cout << v[n % v.size()] << '\n';
 }

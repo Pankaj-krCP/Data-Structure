@@ -1,28 +1,33 @@
 #include <iostream>
 #include <vector>
-using std::vector;
+using namespace std;
 
-long long get_fibonacci_partial_sum_naive(long long from, long long to) {
-    long long sum = 0;
+long long fibonacci_modulo(long long n, long long m) {
+    vector<long long> fib_mod(m * m); 
 
-    long long current = 0;
-    long long next  = 1;
+    fib_mod[0] = 0;
+    fib_mod[1] = 1;
 
-    for (long long i = 0; i <= to; ++i) {
-        if (i >= from) {
-            sum += current;
+    for (long long i = 2; i < m * m; ++i) {
+        fib_mod[i] = (fib_mod[i-1] + fib_mod[i-2]) % m;
+
+        if (fib_mod[i] == 1 && fib_mod[i-1] == 0) {
+            break;
         }
-
-        long long new_current = next;
-        next = next + current;
-        current = new_current;
     }
 
-    return sum % 10;
+    return fib_mod[n % 60];
+}
+
+long long last_digit_partial_sum_fibonacci(long long m, long long n) {
+    long long last_digit_fib_n_plus_2 = fibonacci_modulo(n + 2, 10);
+    long long last_digit_fib_m_plus_1 = fibonacci_modulo(m + 1, 10);
+    return (last_digit_fib_n_plus_2 - last_digit_fib_m_plus_1 + 10) % 10;
 }
 
 int main() {
-    long long from, to;
-    std::cin >> from >> to;
-    std::cout << get_fibonacci_partial_sum_naive(from, to) << '\n';
+    long long m, n;
+    cin >> m >> n;
+    cout << last_digit_partial_sum_fibonacci(m, n) << endl;
+    return 0;
 }

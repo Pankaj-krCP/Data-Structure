@@ -1,25 +1,33 @@
 #include <iostream>
+#include <vector>
+using namespace std;
 
-int fibonacci_sum_squares_naive(long long n) {
-    if (n <= 1)
-        return n;
+long long fibonacci_modulo(long long n, long long m) {
+    vector<long long> fib_mod(m * m);
 
-    long long previous = 0;
-    long long current  = 1;
-    long long sum      = 1;
+    fib_mod[0] = 0;
+    fib_mod[1] = 1;
 
-    for (long long i = 0; i < n - 1; ++i) {
-        long long tmp_previous = previous;
-        previous = current;
-        current = tmp_previous + current;
-        sum += current * current;
+    for (long long i = 2; i < m * m; ++i) {
+        fib_mod[i] = (fib_mod[i-1] + fib_mod[i-2]) % m;
+
+        if (fib_mod[i] == 1 && fib_mod[i-1] == 0) {
+            break;
+        }
     }
 
-    return sum % 10;
+    return fib_mod[n % 60];
+}
+
+long long last_digit_sum_of_squares_fibonacci(long long n) {
+    long long last_digit_fib_n = fibonacci_modulo(n, 10);
+    long long last_digit_fib_n_plus_1 = fibonacci_modulo(n + 1, 10);
+    return (last_digit_fib_n * last_digit_fib_n_plus_1) % 10;
 }
 
 int main() {
-    long long n = 0;
-    std::cin >> n;
-    std::cout << fibonacci_sum_squares_naive(n);
+    long long n;
+    cin >> n;
+    cout << last_digit_sum_of_squares_fibonacci(n) << endl;
+    return 0;
 }
